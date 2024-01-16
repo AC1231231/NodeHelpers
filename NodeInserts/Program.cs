@@ -7,6 +7,7 @@ namespace NodeInserts
         #endregion
 
         #region IsExists
+        // האם ערך מסוים בשרשרת
         public static bool IsExists<T>(Node<T> list, T value)
         {
             while (list != null)
@@ -20,6 +21,7 @@ namespace NodeInserts
         #endregion
 
         #region Count Nodes
+        //סופר מספר חוליות בשרשרת
         public static int CountList<T>(Node<T> head)
         {
             int counter = 0;
@@ -57,7 +59,7 @@ namespace NodeInserts
         }      
         public static Node<T> Delete<T>(Node<T> list, T val)
         {
-            //לא לשכוח לשמור על הראש
+            //
             Node<T> head = list;
             //יש מאיפה למחוק
             if (list != null)
@@ -75,7 +77,6 @@ namespace NodeInserts
                 {
                     //נחפש את החוליה שמכילה את הערך
 
-                    //while(list.HasNext()&&!list.GetNext().GetValue().Equals(val))
                     Node<T> next = list.GetNext();
                     while (next != null && !next.GetValue().Equals(val))
                     {
@@ -96,20 +97,93 @@ namespace NodeInserts
         }
         public static Node<T> DeleteAfterNode<T>(Node<T> node)
         {
-            throw new NotImplementedException();
+            if (node == null || !node.HasNext())
+            {
+                // If the given node is null or the last node, nothing to delete
+                return node;
+            }
+
+            Node<T> nextNode = node.GetNext();
+            node.SetNext(nextNode.GetNext());
+
+            nextNode = null;
+
+            return node;
+        }
+
+
+
+        #endregion
+
+        #region Reverse
+        public static Node<int> Rev(Node<int> lst)
+        {
+            Node<int> newlst = null;
+
+            while (lst != null)
+            {
+                Node<int> newNode = new Node<int>(lst.GetValue(), newlst);
+                newlst = newNode;
+
+                lst = lst.GetNext();
+            }
+
+            return newlst;
         }
 
 
         #endregion
-  
 
+        #region Dupes
+        public static int CountNoOfDuplication(Node<int> head, int x)
+        {
+            if (head == null)
+                return 0;
+            int count = 0;
+            while (head != null)
+            {
+                while (head != null && head.GetValue() != x)
+                {
+                    head = head.GetNext();
+                }
+                if (head != null)
+                {
+                    count++; 
+                    while (head.HasNext() && head.GetNext().GetValue() == x)
+                    {
+                        head = head.GetNext();
+                    }
+                    head = head.GetNext();
+                }
+            }
+            return count;
+        }
+        #endregion
 
+        #region Max
+        //פעולה שמוצאת את הערך המקסימלי בשרשרת חוליות
+        public static int MaxNodeValue(Node<int> head)
+        {
+            int max = head.GetValue();
+            head = head.GetNext();
+            while (head != null)
+            {
+                if (head.GetValue() > max)
+                {
+                    max = head.GetValue();
+                    head = head.GetNext();
 
+                }
+
+            }
+            return max;
+        }
+        #endregion
 
 
 
         static void Main(string[] args)
-        {
+            {
             Node<int> n1 = new Node<int>(6);
             Node<int> n2 = new Node<int>(5, n1);
             Node<int> n3 = new Node<int>(4, n2);
@@ -118,9 +192,10 @@ namespace NodeInserts
             Node<int> n5 = new Node<int>(9, nB);
 
             Console.WriteLine(n5);
+            Console.WriteLine(Rev(n5));
 
            
 
-        }
+            }
     }
 }
